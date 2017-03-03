@@ -17,12 +17,12 @@
                 color: #636b6f;
                 font-family: 'Raleway', sans-serif;
                 font-weight: 100;
-                height: 100vh;
+                /*height: 100vh;*/
                 margin: 0;
             }
 
             .full-height {
-                height: 100vh;
+                /*height: 100vh;*/
             }
 
             .flex-center {
@@ -83,14 +83,20 @@
                 </div>
 
                 <div class="links">
-                    @foreach ($categories as $category)
-                    <a href="https://laravel.com/{{ $category }}">{{ $category }}</a>
+                    <a href="{{ url('') }}">Alle</a>
+                    @foreach ($videos as $video)
+                        <a href="/category/{{ $video->category }}">{{ $video->category }}</a>
                     @endforeach
                 </div>
 
-                      <iframe width="420" height="315"
-                        src="https://www.youtube.com/embed/XGSy3_Czz8k">
-                    </iframe>
+                <div class="video">
+                    @foreach ($videos as $video)
+                        <iframe width="320" height="220"
+                            src="{{ $video->url }}">
+                        </iframe>
+                    @endforeach
+                </div>
+                  
             </div>
         </div>
     </body>

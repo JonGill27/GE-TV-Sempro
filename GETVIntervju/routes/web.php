@@ -13,19 +13,19 @@
 
 Route::get('/', function () {
 
-	$categories = [
+	$videos = DB::table('videos')->get();
 
-		'Alle',
+    return view('home', compact('videos'));
+});
 
-		'Vær- og føre',
-		
-		'Markedskommentar'
-	];
+Route::get('/category/{category}', function ($category) {
 
-    return view('welcome', compact('categories'));
+	$videos = DB::table('videos')->where('category', $category)->get();
+
+    return view('home', compact('videos'));
 });
 
 Route::get('/admin', function () {
 	
-    return view('welcome');
+    return view('admin');
 });
