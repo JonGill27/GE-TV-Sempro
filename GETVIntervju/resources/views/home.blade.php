@@ -64,6 +64,12 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
+
+            .message {
+                margin-bottom: 20px;
+                margin-top: 20px;
+                font-size: 40px;
+            }
         </style>
     </head>
     <body>
@@ -86,9 +92,17 @@
 
                 <div class="links">
                     <a href="{{ url('') }}">Alle</a>
+                    <a href="{{ url('') }}">Arkiv</a>
+                    @foreach ($years as $year)
+                        <a href="/arkiv/{{ $year }}">{{ $year }}</a>
+                    @endforeach
                     @foreach ($categories as $category)
                         <a href="/category/{{ $category }}">{{ $category }}</a>
                     @endforeach
+                </div>
+
+                <div class="message">
+                    {{ $message }}
                 </div>
 
                 <div class="container">
