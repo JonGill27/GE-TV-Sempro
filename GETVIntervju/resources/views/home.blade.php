@@ -47,6 +47,8 @@
 
             .title {
                 font-size: 84px;
+                text-decoration: none;
+                color: #636b6f;
             }
 
             .links > a {
@@ -79,25 +81,32 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    GE-TV
+                    <a class="title" href=" {{ url('') }}">GE-TV</a>
                 </div>
 
                 <div class="links">
                     <a href="{{ url('') }}">Alle</a>
-                    @foreach ($videos as $video)
-                        <a href="/category/{{ $video->category }}">{{ $video->category }}</a>
+                    @foreach ($categories as $category)
+                        <a href="/category/{{ $category }}">{{ $category }}</a>
                     @endforeach
                 </div>
 
-                <div class="video">
+                <div class="container">
                     @foreach ($videos as $video)
-                        <iframe width="320" height="220"
+                        <iframe width="360" height="200"
                             src="{{ $video->url }}">
                         </iframe>
                     @endforeach
                 </div>
-                  
+                <div class="pagination">
+
+                    {{ $videos->links() }}
+                    
+                </div>
             </div>
         </div>
     </body>
+    <footer>  
+        <a href="/admin">Administrator</a>
+    </footer>
 </html>

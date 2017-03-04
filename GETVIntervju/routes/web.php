@@ -13,16 +13,20 @@
 
 Route::get('/', function () {
 
-	$videos = DB::table('videos')->get();
+	$categories = DB::table('videos')->distinct()->pluck('category');
 
-    return view('home', compact('videos'));
+	$videos = DB::table('videos')->paginate(9);
+
+    return view('home', compact('videos', 'categories'));
 });
 
 Route::get('/category/{category}', function ($category) {
 
-	$videos = DB::table('videos')->where('category', $category)->get();
+	$categories = DB::table('videos')->distinct()->pluck('category');
 
-    return view('home', compact('videos'));
+	$videos = DB::table('videos')->where('category', $category)->paginate(9);
+
+    return view('home', compact('videos', 'categories'));
 });
 
 Route::get('/admin', function () {

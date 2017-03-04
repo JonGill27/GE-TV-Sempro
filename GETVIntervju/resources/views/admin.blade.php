@@ -47,6 +47,8 @@
 
             .title {
                 font-size: 84px;
+                text-decoration: none;
+                color: #636b6f;
             }
 
             .links > a {
@@ -79,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    GE-TV Admin
+                    <a class="title" href=" {{ url('') }}">GE-TV Administratorside</a>
                 </div>
 
                 <div class="links">
@@ -92,4 +94,7 @@
             </div>
         </div>
     </body>
+    <footer>
+        <a href="/admin">Administrator</a>
+    </footer>
 </html>
