@@ -21,7 +21,7 @@ Route::get('/', function () {
 
 	$message = "";
 
-    return view('home', compact('videos', 'categories', 'years', 'message'));
+	return view('home', compact('videos', 'categories', 'years', 'message'));
 });
 
 Route::get('/category/{category}', function ($category) {
@@ -34,7 +34,7 @@ Route::get('/category/{category}', function ($category) {
 
 	$message = "Videoer i kategorien $category";
 
-    return view('home', compact('videos', 'categories', 'years', 'message'));
+	return view('home', compact('videos', 'categories', 'years', 'message')); 
 });
 
 Route::get('/arkiv/{year}', function ($year) {
@@ -47,10 +47,16 @@ Route::get('/arkiv/{year}', function ($year) {
 
 	$message = "Videoarkiv fra $year";
 
-    return view('home', compact('videos', 'categories', 'years', 'message'));
+	return view('home', compact('videos', 'categories', 'years', 'message'));
 });
 
 Route::get('/admin', function () {
 	
-    return view('admin');
+	$videos = DB::table('videos')->get();
+
+	return view('admin', compact('videos'));
 });
+
+Route::get('/admin/add', 'AdminController@addVideo');
+
+Route::post('/admin/add','AdminController@addVideotoDB');
