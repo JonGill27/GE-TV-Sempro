@@ -33,42 +33,51 @@
                  <a href="/admin/add">Ny video</a>
              </div>
 
-             <form action = "/admin/add" method = "post">
-                 <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 
-                 <div class="form-group">
-                    <label for="name">Navn</label>
-                    <input type='text' name='name' class="form-control" placeholder="Skriv inn videoens navn">
-                </div>
-                <div class="form-group">
-                    <label for="description">Beskrivelse</label>
-                    <textarea class="form-control" name="description" rows="3" placeholder="Skriv inn en beskrivelse av videoen"></textarea>
-                </div>
+             <div class="formmessage">
+                {{ $message }}
+            </div>
 
-                <div class="form-group">
-                    <label for="url">URL</label>
-                    <input type='text' name='url' class="form-control" placeholder="Skriv inn videoens url">
-                </div>
-                <div class="form-group">
-                    <label for="category">Kategori</label>
-                    <input type='text' name='category' class="form-control" placeholder="Skriv inn videoens kategori">
-                </div>
-                <div class="form-group">
-                    <label for="year">År</label>
-                    <input type='text' name='year' class="form-control" placeholder="Skriv inn videoens årstall">
-                </div>
+            <form action = "/admin/add" method = "post">
+             <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+
+             <div class="form-group">
+                <label for="name">Navn</label>
+                <input type='text' name='name' class="form-control" placeholder="Skriv inn videoens navn">
+                @if ($errors->has('name')) <p class="help-block">{{ $errors->first('name') }}</p> @endif
+            </div>
+            <div class="form-group">
+                <label for="description">Beskrivelse</label>
+                <textarea class="form-control" name="description" rows="3" placeholder="Skriv inn en beskrivelse av videoen"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="url">URL</label>
+                <input type='text' name='url' class="form-control" placeholder="Skriv inn videoens url">
+                @if ($errors->has('url')) <p class="help-block">{{ $errors->first('url') }}</p> @endif
+            </div>
+            <div class="form-group">
+                <label for="category">Kategori</label>
+                <input type='text' name='category' class="form-control" placeholder="Skriv inn videoens kategori">
+                @if ($errors->has('category')) <p class="help-block">{{ $errors->first('category') }}</p> @endif
+            </div>
+            <div class="form-group">
+                <label for="year">År</label>
+                <input type='text' name='year' class="form-control" placeholder="Skriv inn videoens årstall">
+                @if ($errors->has('year')) <p class="help-block">{{ $errors->first('year') }}</p> @endif
+            </div>
 
 
-                <button type="submit" class="btn btn-primary">Legg til video</button>
+            <div class="form-check">
+                <label for="highlighted" class="form-check-label">Fremhevet</label>
+                <input name='highlighted' type="checkbox" class="form-check-input">
+            </div>
 
-                <div class="formmessage">
-                    {{ $message }}
-                </div>
+            <button type="submit" class="btn btn-primary">Legg til video</button>
+        </form>
 
-            </form>
-
-        </div>
     </div>
+</div>
 </div>
 </div>
 </body>

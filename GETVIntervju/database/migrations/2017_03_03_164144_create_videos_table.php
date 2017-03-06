@@ -21,7 +21,8 @@ class CreateVideosTable extends Migration
             $table->string('url');
             $table->string('category');
             $table->integer('year');
-            $table->boolean('highlighted')->default(false);
+            $table->boolean('highlighted');
+            $table->timestamps();
         });
     }
 

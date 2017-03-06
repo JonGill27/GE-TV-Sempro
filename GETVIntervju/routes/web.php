@@ -17,11 +17,17 @@ Route::get('/', function () {
 
 	$years = DB::table('videos')->distinct()->pluck('year');
 
-	$videos = DB::table('videos')->paginate(9);
+	$videos = DB::table('videos')->where('highlighted', 0)->paginate(9);
 
-	$message = "";
+	$highlighted = DB::table('videos')->where('highlighted', 1)->first();
 
-	return view('home', compact('videos', 'categories', 'years', 'message'));
+	if ($highlighted != null && (!str_contains(Request::fullUrl(), '/?page=') || (str_contains(Request::fullUrl(), '/?page=1')))) {	
+
+		return view('home', compact('videos', 'categories', 'years', 'message', 'highlighted'));
+	} else {
+
+		return view('home', compact('videos', 'categories', 'years', 'message'));
+	}
 });
 
 Route::get('/category/{category}', function ($category) {
@@ -60,3 +66,9 @@ Route::get('/admin', function () {
 Route::get('/admin/add', 'AdminController@addVideo');
 
 Route::post('/admin/add','AdminController@addVideotoDB');
+
+Route::get('/admin/edit/{id}','AdminController@editVideo');
+
+Route::post('/admin/edit/{id}','AdminController@updateVideo');
+
+Route::get('/admin/delete/{id}', 'AdminController@deleteVideo');

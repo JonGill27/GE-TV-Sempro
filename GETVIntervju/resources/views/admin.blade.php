@@ -33,23 +33,31 @@
                 <a href="/admin/add">Ny video</a>
             </div>
 
-            <div class="container">
+            <div class="message">
+             {{ $message or '' }}
+         </div>
+
+         <div class="container">
             <table class="table table-striped table-bordered table-hover">
-                   <tr>
-                       <th>Navn</th>
-                       <th>Beskrivelse</th> 
-                       <th>Kategori</th>
-                   </tr>
-                   @foreach ($videos as $video)
-                   <tr>
-                    <td>{{ $video->name }}</td>
-                    <td>{{ $video->description }}</td>
-                    <td>{{ $video->category }}</td>
-                </tr>
-                @endforeach
-            </table>
-        </div>   
-    </div>
+               <tr>
+                   <th>Navn</th>
+                   <th>Beskrivelse</th> 
+                   <th>Kategori</th>
+                   <th></th>
+                   <th></th>
+               </tr>
+               @foreach ($videos as $video)
+               <tr>
+                <td>{{ $video->name }}</td>
+                <td>{{ $video->description }}</td>
+                <td>{{ $video->category }}</td>
+                <td><a href="/admin/edit/{{ $video->id }}" class="btn btn-info" role="button" aria-pressed="true">Endre</a></td>
+                <td><a href="/admin/delete/{{ $video->id }}" class="btn btn-danger" role="button" aria-pressed="true">Slett</a></td>
+            </tr>
+            @endforeach
+        </table>
+    </div>   
+</div>
 </div>
 </body>
 <footer>

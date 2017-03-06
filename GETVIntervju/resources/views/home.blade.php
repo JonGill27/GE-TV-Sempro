@@ -30,32 +30,41 @@
 
             <div class="links">
                 <a href="{{ url('') }}">Alle</a>
+                @foreach ($categories as $category)
+                <a href="/category/{{ $category }}">{{ $category }}</a>
+                @endforeach
+                </br>
                 <a href="{{ url('') }}">Arkiv</a>
                 @foreach ($years as $year)
                 <a href="/arkiv/{{ $year }}">{{ $year }}</a>
                 @endforeach
-                @foreach ($categories as $category)
-                <a href="/category/{{ $category }}">{{ $category }}</a>
-                @endforeach
             </div>
 
             <div class="message">
-                {{ $message }}
+             {{ $message or '' }}
+         </div>
+
+         @if (isset($highlighted))
+            <div class="highlighted">
+                <iframe width="900px" height="300px"
+                    src="{{ $highlighted->url }}">
+                </iframe>
             </div>
+        @endif
 
-            <div class="container">
-                @foreach ($videos as $video)
-                <iframe width="360" height="200"
-                src="{{ $video->url }}">
-            </iframe>
-            @endforeach
-        </div>
-        <div class="pagination">
+    <div class="container">
+        @foreach ($videos as $video)
+        <iframe width="300px"
+        src="{{ $video->url }}">
+    </iframe>
+    @endforeach
+</div>
+<div class="pagination">
 
-            {{ $videos->links() }}
+    {{ $videos->links() }}
 
-        </div>
-    </div>
+</div>
+</div>
 </div>
 </body>
 <footer>  
