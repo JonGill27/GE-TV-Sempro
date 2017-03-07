@@ -12,28 +12,20 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-            <div class="top-right links">
-                @if (Auth::check())
-                <a href="{{ url('/home') }}">Home</a>
-                @else
-                <a href="{{ url('/login') }}">Login</a>
-                <a href="{{ url('/register') }}">Register</a>
-                @endif
-            </div>
-            @endif
 
             <div class="content">
                 <div class="title m-b-md">
-                    <a class="title" href=" {{ url('') }}">GE-TV Administratorside</a>
+                    <a class="title" href=" {{ url('') }}">Endre video</a>
                 </div>
 
                 <div class="links">
-                   <a href="/admin">Administratorside</a>
-                   <a href="/admin/add">Ny video</a>
-               </div>
+                    <a href="/">GE-TV</a>
+                    <a href="/admin">Administratorside</a>
+                    <a href="/admin/add">Ny video</a>
+                    <a href="/admin/changepassword">Endre passord</a>
+                </div>
 
-               <form action = "/admin/edit/{{ $video->id }}" method = "post">
+                <form action = "/admin/edit/{{ $video->id }}" method = "post">
                    <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 
                    <div class="form-group">
@@ -66,23 +58,30 @@
 
                 <div class="form-check">
                     <label for="highlighted" class="form-check-label">Fremhevet</label>
-                  <input name='highlighted' type="checkbox" {{ $highlighted }} class="form-check-input">
-              </div>
+                    <input name='highlighted' type="checkbox" {{ $highlighted }} class="form-check-input">
+                </div>
 
-              <button type="submit" class="btn btn-primary">Endre</button>
+                <button type="submit" class="btn btn-primary">Endre</button>
 
-              <div class="formmessage">
-                {{ $message }}
-            </div>
+                <div class="formmessage">
+                    {{ $message or '' }}
+                </div>
 
-        </form>
+            </form>
 
+        </div>
     </div>
-</div>
 </div>
 </div>
 </body>
 <footer>
-    <a href="/admin">Administrator</a>
+    <div class="links">
+      @if(!Auth::check())
+      <a href="/login">Administrator</a>
+      @else
+      <a href="/admin">Administrator</a>
+      <a href="/logout">Logg ut</a>
+      @endif
+  </div>
 </footer>
 </html>

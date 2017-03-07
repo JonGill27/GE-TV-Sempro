@@ -4,18 +4,69 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Video;
+use App\Admin;
 use DB;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
+use Auth;
 
 class AdminController extends Controller
 {	
+
+	public function login(){
+
+		return view('adminlogin');
+	}
+
+	public function AdminLogin(Request $request){
+
+		$rules = array(
+			'email' => 'required|email', 
+			'password' => 'required'
+			);
+
+		$validator = Validator::make(Input::all(), $rules);
+
+		if ($validator->fails()) {
+
+			return Redirect::to('login')->withErrors($validator)->withInput(Input::except('password')); 
+		} else {
+
+			$logindata = array(
+				'email' => Input::get('email'),
+				'password' => Input::get('password')
+				);
+
+			if (Auth::attempt($logindata)) {
+
+				return Redirect::to('admin');
+
+			} else {        
+
+				return Redirect::to('login');
+			}
+		}
+	}
+
+	public function logout() {
+
+		Auth::logout(); 
+		return Redirect::to('login'); 
+	}
+
 	public function addVideo(){
 
 		$message = "";
 
 		return view('addvideo', compact('message'));
+	}
+
+	public function admin() {
+
+		$videos = DB::table('videos')->get();
+
+		return view('admin', compact('videos'));
 	}
 
 	public function addVideotoDB(Request $request) {
@@ -32,10 +83,10 @@ class AdminController extends Controller
 		}
 
 		$rules = array(
-			'name'             => 'required',                        
-			'url'            => 'required|unique:videos',     
-			'category'         => 'required',  
-			'year'         => 'required|regex:[[0-9]{4}]',  
+			'name' => 'required',                        
+			'url' => 'required|unique:videos',     
+			'category' => 'required',  
+			'year' => 'required|regex:[[0-9]{4}]',  
 			);
 
 		$validator = Validator::make(Input::all(), $rules);
@@ -108,31 +159,53 @@ class AdminController extends Controller
 			$description = "";
 		}
 
-		$video = new Video;	
-		$video->exists = true;
-		$video->id = $id;
-		$video->name = $name;
-		$video->description = $description;
-		$video->url = $url;
-		$video->category = $category;
-		$video->year = $year;
+		$rules = array(
+			'name' => 'required',                        
+			'url' => 'required|unique:videos',     
+			'category' => 'required',  
+			'year' => 'required|regex:[[0-9]{4}]',  
+			);
 
-		if($highlighted != null) {
+		$validator = Validator::make(Input::all(), $rules);
 
-			DB::table('videos')->update(array('highlighted' => 0));
-			$video->highlighted = 1;
-		}
-		else {
-			$video->highlighted = 0;
-		}
+		if ($validator->fails()) {
 
-		$video->save();
+			$messages = array(
+				'required' => 'Dette feltet må fylles ut',
+				'unique'  => 'Denne videoen finnes allerede i biblioteket',
+				'year.regex' => 'Ugyldig årstall'
+				);
 
-		$message = "Video endret";
+			return Redirect::to('/admin/add')->withErrors($validator);
 
-		$videos = DB::table('videos')->get();
+		} else {
 
-		return view('admin', compact('message', 'videos'));
+			$video = new Video;	
+			$video->exists = true;
+			$video->id = $id;
+			$video->name = $name;
+			$video->description = $description;
+			$video->url = $url;
+			$video->category = $category;
+			$video->year = $year;
+
+			if($highlighted != null) {
+
+				DB::table('videos')->update(array('highlighted' => 0));
+				$video->highlighted = 1;
+			}
+			else {
+				$video->highlighted = 0;
+			}
+
+			$video->save();
+
+			$message = "Video endret";
+
+			$videos = DB::table('videos')->get();
+
+			return view('admin', compact('message', 'videos'));
+		}	
 	}
 
 	public function deleteVideo($id) {
@@ -144,5 +217,15 @@ class AdminController extends Controller
 		$videos = DB::table('videos')->get();
 
 		return view('admin', compact('videos', 'message'));
+	}
+
+	public function changePassword(Request $request) {
+
+		return view('changepassword');
+	}
+
+	public function updatePassword() {
+
+		// Endre passord i DB
 	}
 }

@@ -12,36 +12,27 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-            <div class="top-right links">
-                @if (Auth::check())
-                <a href="{{ url('/home') }}">Home</a>
-                @else
-                <a href="{{ url('/login') }}">Login</a>
-                <a href="{{ url('/register') }}">Register</a>
-                @endif
-            </div>
-            @endif
 
             <div class="content">
                 <div class="title m-b-md">
-                    <a class="title" href=" {{ url('') }}">GE-TV Administratorside</a>
+                    <a class="title" href=" {{ url('') }}">Legg til video</a>
                 </div>
 
                 <div class="links">
-                 <a href="/admin">Administratorside</a>
-                 <a href="/admin/add">Ny video</a>
+                    <a href="/">GE-TV</a>
+                    <a href="/admin">Administratorside</a>
+                    <a href="/admin/add">Ny video</a>
+                    <a href="/admin/changepassword">Endre passord</a>
+                </div>
+
+                <div class="formmessage">
+                 {{ $message or '' }}
              </div>
 
+             <form action = "/admin/add" method = "post">
+               <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 
-             <div class="formmessage">
-                {{ $message }}
-            </div>
-
-            <form action = "/admin/add" method = "post">
-             <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
-
-             <div class="form-group">
+               <div class="form-group">
                 <label for="name">Navn</label>
                 <input type='text' name='name' class="form-control" placeholder="Skriv inn videoens navn">
                 @if ($errors->has('name')) <p class="help-block">{{ $errors->first('name') }}</p> @endif
@@ -82,6 +73,13 @@
 </div>
 </body>
 <footer>
-    <a href="/admin">Administrator</a>
+   <div class="links">
+      @if(!Auth::check())
+      <a href="/login">Administrator</a>
+      @else
+      <a href="/admin">Administrator</a>
+      <a href="/logout">Logg ut</a>
+      @endif
+  </div>
 </footer>
 </html>

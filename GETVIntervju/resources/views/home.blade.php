@@ -12,17 +12,7 @@
 </head>
 <body>
     <div class="flex-center position-ref full-height">
-        @if (Route::has('login'))
-        <div class="top-right links">
-            @if (Auth::check())
-            <a href="{{ url('/home') }}">Home</a>
-            @else
-            <a href="{{ url('/login') }}">Login</a>
-            <a href="{{ url('/register') }}">Register</a>
-            @endif
-        </div>
-        @endif
-
+    
         <div class="content">
             <div class="title m-b-md">
                 <a class="title" href=" {{ url('') }}">GE-TV</a>
@@ -33,31 +23,31 @@
                 @foreach ($categories as $category)
                 <a href="/category/{{ $category }}">{{ $category }}</a>
                 @endforeach
-                </br>
-                <a href="{{ url('') }}">Arkiv</a>
-                @foreach ($years as $year)
-                <a href="/arkiv/{{ $year }}">{{ $year }}</a>
-                @endforeach
-            </div>
+            </br>
+            <a href="{{ url('') }}">Arkiv</a>
+            @foreach ($years as $year)
+            <a href="/arkiv/{{ $year }}">{{ $year }}</a>
+            @endforeach
+        </div>
 
-            <div class="message">
-             {{ $message or '' }}
-         </div>
+        <div class="message">
+           {{ $message or '' }}
+       </div>
 
-         @if (isset($highlighted))
-            <div class="highlighted">
-                <iframe width="900px" height="300px"
-                    src="{{ $highlighted->url }}">
-                </iframe>
-            </div>
-        @endif
-
-    <div class="container">
-        @foreach ($videos as $video)
-        <iframe width="300px"
-        src="{{ $video->url }}">
+       @if (isset($highlighted))
+       <div class="highlighted">
+        <iframe width="900px" height="300px"
+        src="{{ $highlighted->url }}">
     </iframe>
-    @endforeach
+</div>
+@endif
+
+<div class="container">
+    @foreach ($videos as $video)
+    <iframe width="300px"
+    src="{{ $video->url }}">
+</iframe>
+@endforeach
 </div>
 <div class="pagination">
 
@@ -68,6 +58,13 @@
 </div>
 </body>
 <footer>  
-    <a href="/admin">Administrator</a>
+    <div class="links">
+      @if(!Auth::check())
+      <a href="/login">Administrator</a>
+      @else
+      <a href="/admin">Administrator</a>
+      <a href="/logout">Logg ut</a>
+      @endif
+  </div>
 </footer>
 </html>

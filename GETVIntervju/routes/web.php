@@ -56,19 +56,29 @@ Route::get('/arkiv/{year}', function ($year) {
 	return view('home', compact('videos', 'categories', 'years', 'message'));
 });
 
-Route::get('/admin', function () {
-	
-	$videos = DB::table('videos')->get();
+Auth::routes();
+Route::group(['middleware' => 'auth'], function () {
 
-	return view('admin', compact('videos'));
+	Route::get('/admin', 'AdminController@admin');
+
+	Route::get('/admin/add', 'AdminController@addVideo');
+
+	Route::post('/admin/add','AdminController@addVideotoDB');
+
+	Route::get('/admin/edit/{id}','AdminController@editVideo');
+
+	Route::post('/admin/edit/{id}','AdminController@updateVideo');
+
+	Route::get('/admin/delete/{id}', 'AdminController@deleteVideo');
+
+	Route::get('/admin/changepassword','AdminController@changePassword');
+
+	Route::post('/admin/changepassword','AdminController@updatePassword');
 });
 
-Route::get('/admin/add', 'AdminController@addVideo');
+Route::get('/login', 'AdminController@login');
 
-Route::post('/admin/add','AdminController@addVideotoDB');
+Route::post('/login','AdminController@AdminLogin');
 
-Route::get('/admin/edit/{id}','AdminController@editVideo');
+Route::get('/logout', 'AdminController@logout');
 
-Route::post('/admin/edit/{id}','AdminController@updateVideo');
-
-Route::get('/admin/delete/{id}', 'AdminController@deleteVideo');

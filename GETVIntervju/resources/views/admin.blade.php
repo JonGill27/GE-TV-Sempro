@@ -12,16 +12,6 @@
 </head>
 <body>
     <div class="flex-center position-ref full-height">
-        @if (Route::has('login'))
-        <div class="top-right links">
-            @if (Auth::check())
-            <a href="{{ url('/home') }}">Home</a>
-            @else
-            <a href="{{ url('/login') }}">Login</a>
-            <a href="{{ url('/register') }}">Register</a>
-            @endif
-        </div>
-        @endif
 
         <div class="content">
             <div class="title m-b-md">
@@ -29,8 +19,9 @@
             </div>
 
             <div class="links">
-                <a href="/admin">Administratorside</a>
+                <a href="/">GE-TV</a>
                 <a href="/admin/add">Ny video</a>
+                <a href="/admin/changepassword">Endre passord</a>
             </div>
 
             <div class="message">
@@ -39,15 +30,15 @@
 
          <div class="container">
             <table class="table table-striped table-bordered table-hover">
-               <tr>
-                   <th>Navn</th>
-                   <th>Beskrivelse</th> 
-                   <th>Kategori</th>
-                   <th></th>
-                   <th></th>
-               </tr>
-               @foreach ($videos as $video)
-               <tr>
+             <tr>
+                 <th>Navn</th>
+                 <th>Beskrivelse</th> 
+                 <th>Kategori</th>
+                 <th></th>
+                 <th></th>
+             </tr>
+             @foreach ($videos as $video)
+             <tr>
                 <td>{{ $video->name }}</td>
                 <td>{{ $video->description }}</td>
                 <td>{{ $video->category }}</td>
@@ -61,6 +52,13 @@
 </div>
 </body>
 <footer>
-    <a href="/admin">Administrator</a>
+    <div class="links">
+      @if(!Auth::check())
+      <a href="/login">Administrator</a>
+      @else
+      <a href="/admin">Administrator</a>
+      <a href="/logout">Logg ut</a>
+      @endif
+  </div>
 </footer>
 </html>
