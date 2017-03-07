@@ -14,12 +14,12 @@ use Auth;
 class AdminController extends Controller
 {	
 
-	public function login(){
+	public function login() { // Henter innloggingssiden
 
 		return view('adminlogin');
 	}
 
-	public function AdminLogin(Request $request){
+	public function AdminLogin(Request $request) { // Utfører innlogging og returnerer administratorsiden
 
 		$rules = array(
 			'email' => 'required|email', 
@@ -49,27 +49,25 @@ class AdminController extends Controller
 		}
 	}
 
-	public function logout() {
+	public function logout() { // Logger ut en innlogget administrator
 
 		Auth::logout(); 
-		return Redirect::to('login'); 
+		return Redirect::to('');
 	}
 
-	public function addVideo(){
+	public function addVideo() { // Henter legg til video siden
 
-		$message = "";
-
-		return view('addvideo', compact('message'));
+		return view('addvideo');
 	}
 
-	public function admin() {
+	public function admin() { // Henter administratorsiden
 
 		$videos = DB::table('videos')->get();
 
 		return view('admin', compact('videos'));
 	}
 
-	public function addVideotoDB(Request $request) {
+	public function addVideotoDB(Request $request) { // Utfører koden for å legge til en video til databasen
 
 		$name = $request->input('name');
 		$description = $request->input('description');
@@ -99,7 +97,7 @@ class AdminController extends Controller
 				'year.regex' => 'Ugyldig årstall'
 				);
 
-			return Redirect::to('/admin/add')->withErrors($validator);
+			return Redirect::back()->withInput()->withErrors($validator->messages());
 
 		} else {
 
@@ -127,9 +125,7 @@ class AdminController extends Controller
 		}
 	}
 
-	public function editVideo($id) {
-
-		$message = "";
+	public function editVideo($id) { // Henter siden for å endre en gitt video
 
 		$video = DB::table('videos')->where('id', $id)->first();
 
@@ -143,10 +139,10 @@ class AdminController extends Controller
 			$highlighted = "";
 		}
 
-		return view('editvideo', compact('video', 'message', 'highlighted'));
+		return view('editvideo', compact('video', 'highlighted'));
 	}
 
-	public function updateVideo(Request $request, $id) {
+	public function updateVideo(Request $request, $id) { // Utfører endringen av en video og oppdaterer databasen
 
 		$name = $request->input('name');
 		$description = $request->input('description');
@@ -161,7 +157,7 @@ class AdminController extends Controller
 
 		$rules = array(
 			'name' => 'required',                        
-			'url' => 'required|unique:videos',     
+			'url' => 'required',     
 			'category' => 'required',  
 			'year' => 'required|regex:[[0-9]{4}]',  
 			);
@@ -176,7 +172,7 @@ class AdminController extends Controller
 				'year.regex' => 'Ugyldig årstall'
 				);
 
-			return Redirect::to('/admin/add')->withErrors($validator);
+			return Redirect::back()->withInput()->withErrors($validator->messages());
 
 		} else {
 
@@ -200,15 +196,11 @@ class AdminController extends Controller
 
 			$video->save();
 
-			$message = "Video endret";
-
-			$videos = DB::table('videos')->get();
-
-			return view('admin', compact('message', 'videos'));
+			return Redirect::to('/admin');
 		}	
 	}
 
-	public function deleteVideo($id) {
+	public function deleteVideo($id) { // Sletter en gitt video fra databasen
 
 		DB::table('videos')->delete($id);
 
@@ -216,16 +208,18 @@ class AdminController extends Controller
 
 		$videos = DB::table('videos')->get();
 
-		return view('admin', compact('videos', 'message'));
+		return Redirect::to('/admin');
 	}
 
-	public function changePassword(Request $request) {
+	public function changePassword(Request $request) { // Henter ut siden for passordendring
 
 		return view('changepassword');
 	}
 
-	public function updatePassword() {
+	public function updatePassword() { // Utfører endringen av passordet til en admin og oppdaterer databasen
 
 		// Endre passord i DB
 	}
+
+	// Glemt passord
 }

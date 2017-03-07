@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function () { // Henter ut videoer fra databasen og returnerer hjemmesiden
 
 	$categories = DB::table('videos')->distinct()->pluck('category');
 
@@ -30,7 +30,7 @@ Route::get('/', function () {
 	}
 });
 
-Route::get('/category/{category}', function ($category) {
+Route::get('/category/{category}', function ($category) { // Henter ut videoer fra databasen i en gitt kategori
 
 	$categories = DB::table('videos')->distinct()->pluck('category');
 
@@ -43,7 +43,7 @@ Route::get('/category/{category}', function ($category) {
 	return view('home', compact('videos', 'categories', 'years', 'message')); 
 });
 
-Route::get('/arkiv/{year}', function ($year) {
+Route::get('/arkiv/{year}', function ($year) { // Henter ut videoer fra databasen fra et gitt år
 
 	$categories = DB::table('videos')->distinct()->where('year', $year)->pluck('category');
 
